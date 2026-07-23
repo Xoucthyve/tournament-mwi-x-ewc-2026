@@ -83,7 +83,7 @@ Karena data mentah turnamen belum tersedia secara publik saat kompetisi berakhi,
 [ PostgreSQL / SQL Engine ] ──► (Run mwi_2026_data_analysis.sql)
             │
             ▼  (Data Modeling & DAX Calculations)
-[ Power BI Desktop ] ─────────► (Build MWI_2026_Analytics_Dashboard.pbix)
+[ Power BI Desktop ] ─────────► (Build mwi_2026_analysis_dashboard.pbix)
             │
             ▼
 [ Interactive Visual Dashboard & Documentation ]
@@ -133,7 +133,6 @@ Dataset `MWI_X_EWC_2026.csv` mencakup **17 kolom utama** per baris pemain:
 | `Duration` | String | Durasi pertandingan (MM:SS) |
 | `Map` | String | Map yang digunakan dalam pertandingan |
 | `Bracket` | String | Stage pertandingan tersebut (Group Stage & Plyaoffs) |
-
 ---
 
 ## 🗄️ SQL Analytics Preview
@@ -221,7 +220,7 @@ ORDER BY `Total Presence` DESC;
 **Hanif Ubaidah**  
 *Aspiring Data Analyst | Esports Analytics Enthusiast*
 
-- 💼 **LinkedIn:** [https://www.linkedin.com/in/hanif-ubaidah-9604a1292/](https://linkedin.com)
+- 💼 **LinkedIn:** [https://www.linkedin.com/in/hanifubaidah13](https://linkedin.com)
 - 🐙 **GitHub:** [(https://github.com/Xoucthyve)](https://github.com)
 - ✉️ **Email:** hanifubaidah07@gmail.com
 
