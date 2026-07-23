@@ -133,6 +133,7 @@ Dataset `MWI_X_EWC_2026.csv` mencakup **17 kolom utama** per baris pemain:
 | `Duration` | String | Durasi pertandingan (MM:SS) |
 | `Map` | String | Map yang digunakan dalam pertandingan |
 | `Bracket` | String | Stage pertandingan tersebut (Group Stage & Plyaoffs) |
+
 ---
 
 ## 🗄️ SQL Analytics Preview
