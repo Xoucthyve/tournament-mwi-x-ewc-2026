@@ -115,7 +115,7 @@ Karena data mentah turnamen belum tersedia secara publik saat kompetisi berakhi,
 Dataset `MWI_X_EWC_2026.csv` mencakup **17 kolom utama** per baris pemain:
 
 | Nama Kolom | Tipe Data | Deskripsi |
-| :--- | :--- | :--- ||
+| :--- | :--- | :--- |
 | `Date` | Date | Tanggal pertandingan berlangsung (DD-MM-YYYY) |
 | `Side` | String | Posisi tim dalam draft (`Blue` / `Red`) |
 | `Win/Lose` | String | Hasil pertandingan (`Win` / `Lose`) |
