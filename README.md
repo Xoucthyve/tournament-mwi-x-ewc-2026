@@ -20,7 +20,7 @@ Karena data mentah turnamen belum tersedia secara publik saat kompetisi berakhir
 
 ## 🖼️ Dashboard Preview & Features
 
-![MWI 2026 Dashboard Preview]
+[MWI 2026 Dashboard Preview]
 **Cracking The Meta** <img width="1327" height="741" alt="Cracking The Meta" src="https://github.com/user-attachments/assets/89fd08ea-718e-413d-8c03-5fe6a17ecaa8" />
 **The MVP Formula** <img width="1327" height="740" alt="The MVP Formula" src="https://github.com/user-attachments/assets/5c542446-8ac7-474c-9169-7bbfd88609de" />
 
