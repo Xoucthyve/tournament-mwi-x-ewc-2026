@@ -14,7 +14,7 @@ MWI x EWC Tournament Data Analysis using Excel, SQL & Power BI
 
 Proyek ini menyajikan **end-to-end data analytics** untuk turnamen **Mobile Legends: Bang Bang Women's International (MWI) 2026** di ajang **Esports World Cup (EWC 2026)** yang berlangsung pada **14 – 18 Juli 2026**.
 
-Karena data mentah turnamen belum tersedia secara publik saat kompetisi berakhi, pengumpulan data dilakukan secara **manual & terstruktur** melalui ekstraksi web **Liquipedia** serta peninjauan ulang siaran pertandingan (**YouTube VODs**). Dataset yang terkumpul kemudian dibersihkan, diolah dengan **SQL**, dan divisualisasikan dalam **Microsoft Power BI Dashboard** interaktif.
+Karena data mentah turnamen belum tersedia secara publik saat kompetisi berakhir, pengumpulan data dilakukan secara **manual & terstruktur** melalui ekstraksi web **Liquipedia** serta peninjauan ulang siaran pertandingan (**YouTube VODs**). Dataset yang terkumpul kemudian dibersihkan, diolah dengan **SQL**, dan divisualisasikan dalam **Microsoft Power BI Dashboard** interaktif.
 
 ---
 
