@@ -39,11 +39,10 @@ Karena data mentah turnamen belum tersedia secara publik saat kompetisi berakhi,
 ### Part 1: 🔮 Cracking The META (Draft & Meta Dynamics)
 
 1. **87 Hero Muncul vs 46 Hero "Tidur"**
-   - Dari total 133 hero di MLBB, hanya **87 hero** yang tersentuh di fase *Pick* maupun *Ban*. 
-   - *Analisis:* Mengingat MWI 2026 masih menerapkan format *Draft Pick* standar (non-Global Ban/Fearless Draft), perebutan hero sangat terkonsentrasi pada 87 hero *tier-S* yang paling efektif sesuai meta turnamen.
+   - Dari total 133 hero di MLBB, hanya **87 hero** yang tersentuh di fase *Pick* maupun *Ban*. Mengingat MWI 2026 masih menerapkan format *Draft Pick* standar (non-Global Ban/Fearless Draft), perebutan hero sangat terkonsentrasi pada 87 hero *tier-S* yang paling efektif sesuai meta turnamen.
 
 2. **Rata-Rata Durasi Pertandingan: 17 Menit 21 Detik (17:21)**
-   - *Analisis:* Mayoritas pertandingan berlangsung hingga fase *Mid to Late Game*. Ini menunjukkan ketatnya pertahanan *High Ground* serta kehati-hatian tim dalam melakukan *set-up Lord* tanpa terburu-buru mengakhiri game di *Early Game*.
+   - Mayoritas pertandingan berlangsung hingga fase *Mid to Late Game*. Ini menunjukkan ketatnya pertahanan *High Ground* serta kehati-hatian tim dalam melakukan *set-up Lord* tanpa terburu-buru mengakhiri game di *Early Game*.
 
 3. **Top 5 Contest Rate Heroes (Most Priority Pick/Ban):**
    - **Marcel:** *Roamer* dengan *Crowd Control* tinggi dan mobilitas luar biasa.
@@ -53,8 +52,7 @@ Karena data mentah turnamen belum tersedia secara publik saat kompetisi berakhi,
    - **Esmeralda:** Hero *Zoning* tebal yang efektif menembus hero ber-*shield* (seperti Hanabi & Harith).
 
 4. **Keunggulan Red Side (Second Pick) vs Blue Side (First Pick)**
-   - *Win Rate* **Red Side (Second Pick)** lebih tinggi dibandingkan Blue Side di MWI 2026.
-   - *Analisis:* Patch MWI 2026 tergolong cukup seimbang, sehingga mengamankan *First Pick* tidak memberikan keuntungan mutlak (kecuali mengamankan hero *priority* seperti Marcel atau Hirara). Sebaliknya, *Second Pick* memberikan keunggulan fleksibilitas **Counter-Pick** pada fase draft terakhir.
+   - *Win Rate* **Red Side (Second Pick)** lebih tinggi dibandingkan Blue Side di MWI 2026. Patch MWI 2026 tergolong cukup seimbang, sehingga mengamankan *First Pick* tidak memberikan keuntungan mutlak (kecuali mengamankan hero *priority* seperti Marcel atau Hirara). Sebaliknya, *Second Pick* memberikan keunggulan fleksibilitas **Counter-Pick** pada fase draft terakhir.
 
 ### Part 2: 🔮 The MVP Formula (Player Performance)
 1. **Midlaner the MVP**
@@ -114,17 +112,15 @@ Karena data mentah turnamen belum tersedia secara publik saat kompetisi berakhi,
 
 ## 📑 Data Dictionary (Schema)
 
-Dataset `MWI_X_EWC_2026.csv` mencakup **18 kolom utama** per baris pemain:
+Dataset `MWI_X_EWC_2026.csv` mencakup **17 kolom utama** per baris pemain:
 
 | Nama Kolom | Tipe Data | Deskripsi |
-| :--- | :--- | :--- |
-| `GameID` | String | Id unik per pertandingan (Contoh: `MWI26_GA_M01_G1`) |
-| `Date` | Date | Tanggal pertandingan berlangsung (YYYY-MM-DD) |
-| `Stage` | String | Tahap turnamen (Group Stage / Knockout Stage) |
+| :--- | :--- | :--- ||
+| `Date` | Date | Tanggal pertandingan berlangsung (DD-MM-YYYY) |
 | `Side` | String | Posisi tim dalam draft (`Blue` / `Red`) |
 | `Win/Lose` | String | Hasil pertandingan (`Win` / `Lose`) |
 | `Player` | String | Nickname pemain |
-| `Role` | String | Peran pemain (`Goldlane`, `EXP`, `Mid`, `Roamer`, `Jungler`) |
+| `Role` | String | Role pemain (`Goldlane`, `EXP`, `Mid`, `Roamer`, `Jungler`) |
 | `Hero` | String | Hero yang digunakan pemain |
 | `Hero Ban` | String | Daftar hero yang di-ban oleh tim pada game tersebut |
 | `Spell` | String | Battle Spell yang digunakan pemain |
@@ -134,27 +130,76 @@ Dataset `MWI_X_EWC_2026.csv` mencakup **18 kolom utama** per baris pemain:
 | `Kill` | Integer | Jumlah Kill individu pemain |
 | `Death` | Integer | Jumlah Death individu pemain |
 | `Assist` | Integer | Jumlah Assist individu pemain |
-| `Duration` | Time/String | Durasi pertandingan (MM:SS) |
-| `Map` | String | Urutan Game dalam Seri (Game 1, Game 2, dst) |
+| `Duration` | String | Durasi pertandingan (MM:SS) |
+| `Map` | String | Map yang digunakan dalam pertandingan |
+| `Bracket` | String | Stage pertandingan tersebut (Group Stage & Plyaoffs) |
 
 ---
 
 ## 🗄️ SQL Analytics Preview
 
-Berikut adalah contoh skrip SQL yang digunakan untuk menghitung **Win Rate berdasarkan Side Selection**:
+Berikut adalah contoh skrip SQL yang digunakan untuk mengerjakan project **Cracking The Meta** :
 
 ```sql
--- Analisis Win Rate berdasarkan Side (Blue vs Red)
+WITH 
+-- Hitung Total Game pada Turnamen MWI 2026 --
+total_tournament_games AS (
+    SELECT COUNT(DISTINCT `Date`, Team, Opponent, Duration) AS total_games 
+    FROM data_mwi_2026
+),
+
+-- Daftar Semua Hero pada Turnamen MWI 2026 --
+master_hero_list AS (
+    SELECT Hero AS hero_name FROM data_mwi_2026 WHERE Hero IS NOT NULL AND Hero <> ''
+    UNION
+    SELECT`Ban Hero` FROM data_mwi_2026 WHERE `Ban Hero` IS NOT NULL AND `Ban Hero` <> ''
+),
+
+-- Hitung Total Pick & Menang per Hero --
+hero_picks AS (
+    SELECT 
+        Hero AS hero_name ,
+        COUNT(*) AS total_picks,
+        SUM(CASE WHEN `Win/Lose` = 'Win' THEN 1 ELSE 0 END) AS total_wins
+    FROM data_mwi_2026
+    WHERE Hero IS NOT NULL AND Hero <> ''
+    GROUP BY Hero
+),
+
+-- Hitung Total Ban per Hero --
+hero_bans AS (
+    SELECT 
+        `Ban Hero` AS hero_name ,
+        COUNT(*) AS total_bans
+    FROM data_mwi_2026
+    WHERE `Ban Hero` IS NOT NULL AND `Ban Hero` <> ''
+    GROUP BY `Ban Hero`
+)
+
+-- Gabungkan Data kemudian Hitung Win Rate & Presence Rate --
 SELECT 
-    Side,
-    COUNT(DISTINCT GameID) AS Total_Games,
-    SUM(CASE WHEN `Win/Lose` = 'Win' THEN 1 ELSE 0 END) / 10 AS Total_Wins,
+    m.hero_name,
+    COALESCE(p.total_picks, 0) AS Pick,
+    COALESCE(b.total_bans, 0) AS Ban,
+    COALESCE(p.total_picks, 0) + COALESCE(b.total_bans, 0) AS `Total Presence`,
+    
+    -- Menghitung Win Rate (%) --
     ROUND(
-        (SUM(CASE WHEN `Win/Lose` = 'Win' THEN 1 ELSE 0 END) / 10.0) / COUNT(DISTINCT GameID) * 100, 
-        2
-    ) AS Win_Rate_Percentage
-FROM mwi_2026_dataset
-GROUP BY Side;
+        CASE 
+            WHEN COALESCE(p.total_picks, 0) = 0 THEN 0
+            ELSE (p.total_wins * 100.0) / p.total_picks
+        END, 2
+    ) AS `Win Rate`,
+    
+    -- Menghitung Presence Rate (%) Berdasarkan Total Game Turnamen
+    ROUND(
+        ((COALESCE(p.total_picks, 0) + COALESCE(b.total_bans, 0)) * 100.0) / tg.total_games, 2
+    ) AS `Presence Rate Percentage`
+FROM master_hero_list m
+CROSS JOIN total_tournament_games tg
+LEFT JOIN hero_picks p ON m.hero_name = p.hero_name
+LEFT JOIN hero_bans b ON m.hero_name = b.hero_name
+ORDER BY `Total Presence` DESC;
 ```
 
 ---
@@ -176,9 +221,9 @@ GROUP BY Side;
 **Hanif Ubaidah**  
 *Aspiring Data Analyst | Esports Analytics Enthusiast*
 
-- 💼 **LinkedIn:** [linkedin.com/in/hanifubaidah](https://linkedin.com)
-- 🐙 **GitHub:** [github.com/hanifubaidah](https://github.com)
-- ✉️ **Email:** hanifubaidah@example.com
+- 💼 **LinkedIn:** [https://www.linkedin.com/in/hanif-ubaidah-9604a1292/](https://linkedin.com)
+- 🐙 **GitHub:** [(https://github.com/Xoucthyve)](https://github.com)
+- ✉️ **Email:** hanifubaidah07@gmail.com
 
 ---
 *Dibuat dengan semangat untuk memajukan industri Esports Analytics di Indonesia. Mari berdiskusi! 🚀*
