@@ -225,5 +225,9 @@ ORDER BY `Total Presence` DESC;
 - 🐙 **GitHub:** [(https://github.com/Xoucthyve)](https://github.com)
 - ✉️ **Email:** hanifubaidah07@gmail.com
 
+## 📄 License & Attribution
+Dataset ini dikumpulkan dan dibersihkan secara manual untuk tujuan edukasi dan analisis portofolio.
+Bebas digunakan oleh siapa saja untuk kebutuhan riset/konten, cukup cantumkan kredit ke repository ini!
+
 ---
 *Dibuat dengan semangat untuk memajukan industri Esports Analytics di Indonesia. Mari berdiskusi! 🚀*
